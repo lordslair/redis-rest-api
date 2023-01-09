@@ -38,8 +38,9 @@ jobs:
     - name: Test with PyTest
       id: pytestext
       env:
-          LOGURU_LEVEL: ${{ secrets.LOGURU_LEVEL }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GUNICORN_CHDIR: ${{ secrets.GUNICORN_CHDIR }}
+          LOGURU_LEVEL: ${{ secrets.LOGURU_LEVEL }}
       run: |
         echo "--- Starting app in background"
         python3 code/app.py &
