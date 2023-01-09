@@ -26,8 +26,8 @@ RUN apk update --no-cache \
     && apk add --no-cache python3=~3.10 \
                           tzdata=~2022 \
     && apk add --no-cache --virtual .build-deps \
-                                    gcc=~10.3 \
-                                    g++=~10.3 \
+                                    gcc=~12.2 \
+                                    g++=~12.2 \
                                     libc-dev=~0.7 \
                                     libffi-dev=~3.4 \
                                     python3-dev=~3.10 \
