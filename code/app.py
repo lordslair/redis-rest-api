@@ -27,6 +27,8 @@ from utils.gunilog import (
     StubbedGunicornLogger,
     )
 
+# Imports of endpoint functions
+import routes.query
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)  # We wrap around all the app the metrics
@@ -58,6 +60,42 @@ def check():
             "payload": None,
             }
         ), 200
+
+
+#
+# Routes /query
+#
+app.add_url_rule(
+    '/query/<path:key>',
+    methods=['GET'],
+    view_func=routes.query.get
+    )
+app.add_url_rule(
+    '/query/<path:key>',
+    methods=['DELETE'],
+    view_func=routes.query.delete
+    )
+app.add_url_rule(
+    '/query/<path:key>',
+    methods=['POST'],
+    view_func=routes.query.post
+    )
+app.add_url_rule(
+    '/query/<path:key>/<string:field_name>',
+    methods=['PUT'],
+    view_func=routes.query.put_one
+    )
+app.add_url_rule(
+    '/query/<path:key>',
+    methods=['PUT'],
+    view_func=routes.query.put_multi
+    )
+app.add_url_rule(
+    '/query/raw',
+    methods=['POST'],
+    view_func=routes.query.raw
+    )
+
 
 if __name__ == '__main__':
     intercept_handler = InterceptHandler()
