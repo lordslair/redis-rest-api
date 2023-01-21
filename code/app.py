@@ -4,9 +4,9 @@
 import sys
 import time
 
-from flask                         import Flask, jsonify, g
+from flask import Flask, jsonify, g
 
-from prometheus_flask_exporter     import PrometheusMetrics
+from prometheus_flask_exporter import PrometheusMetrics
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 

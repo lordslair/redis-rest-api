@@ -56,7 +56,7 @@ def put_one(key, field_name):
             }
         ), 400
     else:
-        field_value  = request.json.get(field_name)
+        field_value = request.json.get(field_name)
         msg = (
             f'[{key}] FIELD <{field_name}> found in JSON body '
             f'(value:{field_value})'
