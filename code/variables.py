@@ -5,6 +5,9 @@ import os
 # Token used restrictes access
 ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', None)
 
+# Return code used when a KEY is nor found in Redis
+CODE_ENOTFOUND = int(os.environ.get('CODE_ENOTFOUND', 404))
+
 # Gunicorn variables
 GUNICORN_CHDIR = os.environ.get("GUNICORN_CHDIR", '/code')
 GUNICORN_HOST = os.environ.get("GUNICORN_HOST", "0.0.0.0")

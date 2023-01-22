@@ -77,18 +77,18 @@ app.add_url_rule(
     )
 app.add_url_rule(
     '/query/<path:key>',
+    methods=['PATCH'],
+    view_func=routes.query.patch
+    )
+app.add_url_rule(
+    '/query/<path:key>',
     methods=['POST'],
     view_func=routes.query.post
     )
 app.add_url_rule(
-    '/query/<path:key>/<string:field_name>',
-    methods=['PUT'],
-    view_func=routes.query.put_one
-    )
-app.add_url_rule(
     '/query/<path:key>',
     methods=['PUT'],
-    view_func=routes.query.put_multi
+    view_func=routes.query.put
     )
 app.add_url_rule(
     '/query/raw',

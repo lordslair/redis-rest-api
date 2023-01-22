@@ -7,7 +7,7 @@ from utils.redis import r
 from utils.routehelper import (
     request_check_token,
     )
-from variables import ACCESS_TOKEN
+from variables import ACCESS_TOKEN, CODE_ENOTFOUND
 
 
 def delete(key):
@@ -25,7 +25,7 @@ def delete(key):
                 "success": False,
                 "payload": None,
                 }
-            ), 404
+            ), CODE_ENOTFOUND
 
     try:
         r.delete(key)

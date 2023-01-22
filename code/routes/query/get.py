@@ -8,7 +8,7 @@ from utils.routehelper import (
     request_check_token,
     str2typed,
     )
-from variables import ACCESS_TOKEN
+from variables import ACCESS_TOKEN, CODE_ENOTFOUND
 
 
 def get(key):
@@ -26,7 +26,7 @@ def get(key):
                 "success": False,
                 "payload": None,
                 }
-            ), 404
+            ), CODE_ENOTFOUND
 
     key_type = r.type(key)
     if key_type == 'hash':
