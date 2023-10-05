@@ -36,7 +36,7 @@ jobs:
         echo "--- Installing PIP"
         python -m pip install --upgrade pip
         echo "--- Installing PyTest prerequisites"
-        pip install pytest flake8 cryptography
+        pip install cryptography flake8 pytest requests 
         echo "--- Installing requirements"
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
