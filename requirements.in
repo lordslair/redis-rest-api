@@ -1,4 +1,4 @@
-Flask                     ~= 2.3
+Flask                     ~= 3.0
 gunicorn                  ~= 21.2
 loguru                    ~= 0.7
 redis                     ~= 5.0
