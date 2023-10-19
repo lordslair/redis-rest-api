@@ -6,7 +6,7 @@ from flask import jsonify
 def raw():
     return jsonify(
         {
-            "msg": 'RAW',
+            "msg": 'RAW (Not Implemented)',
             "success": True,
             "payload": None,
             }

@@ -12,6 +12,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from variables import (
     ACCESS_TOKEN,
+    CODE_ENOTFOUND,
     GUNICORN_BIND,
     GUNICORN_CHDIR,
     GUNICORN_RELOAD,
@@ -102,9 +103,11 @@ if __name__ == '__main__':
     logging.root.setLevel(LOG_LEVEL)
 
     if ACCESS_TOKEN is None:
-        logger.warning('ENV var ACCESS_TOKEN not set. API not protected')
+        logger.warning('Config: ACCESS_TOKEN not set. API not protected')
     else:
-        logger.success('ENV var ACCESS_TOKEN set. API protected')
+        logger.success('Config: ACCESS_TOKEN set. API protected')
+    # Logging for Env var CODE_ENOTFOUND
+    logger.debug(f'Config: CODE_ENOTFOUND: {CODE_ENOTFOUND}')
 
     seen = set()
     for name in [

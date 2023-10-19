@@ -20,11 +20,13 @@ Most of these variables have default values, and are not Mandatory
 
 API variables :
 - `ACCESS_TOKEN`: JWT Token used to restrict access to the API (Default: `None`)
+- `CODE_ENOTFOUND`: HTTP return code if the requested KEY does not exists in redis (Default: `404`)
 
 ENV global variables :
-- `LOGURU_LEVEL`: Minimal level for log output (Default: `DEBUG`)
+- `LOGURU_LEVEL`: Minimal level for log output (Default: `DEBUG`)  
 
-WARNING:
+
+Security warning :  
 `ACCESS_TOKEN` is here to protect you and avoid the API to be publicly accessible.  
 Set this variable, and/or put other protection mesures in front of the API (ie: restrict access with nginx)
 Don't blame the project if you fail with this.
@@ -33,7 +35,8 @@ Don't blame the project if you fail with this.
 
 ```
 2023-01-09 16:53:33 | level=DEBUG    | utils.redis:<module>:24 - Redis Connection OK (r)
-2023-01-09 16:53:33 | level=SUCCESS  | __main__:<module>:107 - ENV var ACCESS_TOKEN set. API protected
+2023-10-19 16:53:33 | level=SUCCESS  | __main__:<module>:108 - Config: ACCESS_TOKEN set. API protected
+2023-10-19 16:53:33 | level=DEBUG    | __main__:<module>:110 - Config: CODE_ENOTFOUND: 200
 2023-01-09 16:53:33 | level=INFO     | gunicorn.glogging:info:264 - Starting gunicorn 20.1.0
 2023-01-09 16:53:33 | level=INFO     | gunicorn.glogging:info:264 - Listening at: http://0.0.0.0:5000 (609)
 2023-01-09 16:53:33 | level=INFO     | gunicorn.glogging:info:264 - Using worker: gthread
