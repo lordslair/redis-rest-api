@@ -21,13 +21,22 @@ def test_redis_api_get():
 
     logger.debug(f'{response.status_code}, {response.text}')
     assert response.status_code == 200
-    assert json.loads(response.text)['success'] is True
-    assert json.loads(response.text)['payload']['key'] == f'tests:{ITEM_ID}'
-    assert json.loads(response.text)['payload']['value']['id'] == ITEM_ID
-    assert json.loads(response.text)['payload']['value']['claimed'] is True
-    assert json.loads(response.text)['payload']['value']['archived'] is False
-    assert json.loads(response.text)['payload']['value']['type'] is None
-    assert json.loads(response.text)['payload']['value']['timestamp'] > 0
+
+    response_json = json.loads(response.text)
+    assert response_json['success'] is True
+
+    payload_key = response_json['payload']['key']
+    payload_value = response_json['payload']['value']
+    assert payload_key == f'tests:{ITEM_ID}'
+    assert payload_value['id'] == ITEM_ID
+    assert payload_value['claimed'] is True
+    assert payload_value['archived'] is False
+    assert payload_value['type'] is None
+    assert payload_value['timestamp'] > 0
+
+    payload_extra = response_json['payload']['value']['extra']
+    assert payload_extra['field_one'] == 'value'
+    assert payload_extra['field_two']['field_nested_one'] == 'value_nested'
 
     # If we query non-existing key, it should return a 404
     response = requests.get(

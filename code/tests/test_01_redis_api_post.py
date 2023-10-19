@@ -17,6 +17,14 @@ EVENT_BODY = {
     "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     "id": ITEM_ID,
     "timestamp": time.time_ns() // 1000000,
+    "extra": {
+        "field_one": 'value',
+        "field_two": {
+            "field_nested_one": 'value_nested',
+            "field_nested_two": None,
+            "field_nested_three": False,
+        }
+    },
     "type": None,
     "archived": False,
     "claimed": True,

@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 
+import json
 import re
 
 from flask                      import jsonify
@@ -72,6 +73,13 @@ def str2typed(string):
     # INT
     elif string.isdigit():
         return int(string)
+    # JSON > DICT()
+    if string.startswith('{') and string.endswith('}'):
+        try:
+            json.loads(string)
+        except ValueError:
+            return string
+        return json.loads(string)
     else:
         return string
 
@@ -86,5 +94,8 @@ def typed2str(string):
     # BOOLEAN False
     elif string is False:
         return 'False'
+    # DICT() > JSON
+    elif isinstance(string, dict):
+        return json.dumps(string)
     else:
         return string
