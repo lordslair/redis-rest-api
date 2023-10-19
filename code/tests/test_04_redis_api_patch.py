@@ -21,6 +21,8 @@ EVENT_BODY = {
     "archived": False,
     "claimed": True,
 }
+# Return code used when a KEY is nor found in Redis
+CODE_ENOTFOUND = int(os.environ.get('CODE_ENOTFOUND', 404))
 
 
 def test_redis_api_patch():
@@ -37,7 +39,7 @@ def test_redis_api_patch():
     assert json.loads(response.text)['payload']['value']['claimed'] is False
     assert json.loads(response.text)['payload']['value']['archived'] is True
 
-    # If we query non-existing key, it should return a 404
+    # If we query non-existing key, it should return a CODE_ENOTFOUND
     response = requests.patch(
         url=f'{API_URL}/query/tests:foobar',
         headers=HEADERS,
@@ -45,5 +47,6 @@ def test_redis_api_patch():
         )
 
     logger.debug(f'{response.status_code}, {response.text}')
-    assert response.status_code == 404
+    assert response.status_code == CODE_ENOTFOUND
     assert json.loads(response.text)['success'] is False
+    assert json.loads(response.text)['payload'] is None

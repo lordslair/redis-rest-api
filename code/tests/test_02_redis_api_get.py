@@ -11,6 +11,8 @@ API_URL = f'http://127.0.0.1:{GUNICORN_PORT}'
 ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', None)
 HEADERS = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
 ITEM_ID = '00000000-0000-0000-0000-000000000000'
+# Return code used when a KEY is nor found in Redis
+CODE_ENOTFOUND = int(os.environ.get('CODE_ENOTFOUND', 404))
 
 
 def test_redis_api_get():
@@ -38,12 +40,13 @@ def test_redis_api_get():
     assert payload_extra['field_one'] == 'value'
     assert payload_extra['field_two']['field_nested_one'] == 'value_nested'
 
-    # If we query non-existing key, it should return a 404
+    # If we query non-existing key, it should return a CODE_ENOTFOUND
     response = requests.get(
         url=f'{API_URL}/query/tests:foobar',
         headers=HEADERS,
         )
 
     logger.debug(f'{response.status_code}, {response.text}')
-    assert response.status_code == 404
+    assert response.status_code == CODE_ENOTFOUND
     assert json.loads(response.text)['success'] is False
+    assert json.loads(response.text)['payload'] is None
