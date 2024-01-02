@@ -60,6 +60,24 @@ def put(key):
     else:
         logger.trace(f'[{key}] KEY HMSET OK')
 
+    # We check if TTL is given, to SET EXPIRE on the key
+    try:
+        expire = request.headers.get('X-Custom-Redis-Expire')
+        if expire:
+            r.expire(key, expire)
+    except Exception as e:
+        msg = f'[{key}] KEY EXPIRE KO [{e}]'
+        logger.error(msg)
+        return jsonify(
+            {
+                "success": False,
+                "msg": msg,
+                "payload": None,
+            }
+        ), 200
+    else:
+        logger.trace(f'[{key}] KEY EXPIRE OK')
+
     # We grab the TTL to return it in headers later
     try:
         ttl = r.ttl(key)
