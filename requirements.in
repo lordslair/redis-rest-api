@@ -1,5 +1,5 @@
 Flask                     ~= 3.0
-gunicorn                  ~= 21.2
+gunicorn                  ~= 22.0
 loguru                    ~= 0.7
 redis                     ~= 5.0
 prometheus-flask-exporter ~= 0.23
