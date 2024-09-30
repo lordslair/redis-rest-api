@@ -32,7 +32,7 @@ prometheus-client==0.15.0
     # via prometheus-flask-exporter
 prometheus-flask-exporter==0.23.0
     # via -r requirements.in
-redis==5.0.3
+redis==5.1.0
     # via -r requirements.in
 werkzeug==3.0.0
     # via flask
