@@ -18,7 +18,7 @@ def request_check_token(request, bearer):
                     "msg": msg,
                     "payload": None,
                 }
-            ), 403
+            ), 401
     except Exception as e:
         logger.error(f'[API] Token validation KO [{e}]')
         return jsonify(
@@ -27,7 +27,7 @@ def request_check_token(request, bearer):
                 "msg": msg,
                 "payload": None,
             }
-        ), 200
+        ), 500
     else:
         logger.trace('[API] Token validation OK')
 
@@ -52,7 +52,7 @@ def request_check_json(request):
                 "msg": msg,
                 "payload": None,
             }
-        ), 200
+        ), 500
     else:
         logger.trace('[API] JSON validation OK')
 
