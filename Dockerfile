@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.21
 
 RUN adduser -h /code -u 1000 -D -H api
 
