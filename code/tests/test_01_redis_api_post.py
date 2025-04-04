@@ -1,17 +1,11 @@
 # -*- coding: utf8 -*-
 
-import json
 import requests
-import os
 import time
 
 from datetime import datetime
 from loguru import logger
 
-GUNICORN_PORT = os.environ.get("GUNICORN_PORT", 5000)
-API_URL = f'http://127.0.0.1:{GUNICORN_PORT}'
-ACCESS_TOKEN = os.environ.get('ACCESS_TOKEN', None)
-HEADERS = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
 ITEM_ID = '00000000-0000-0000-0000-000000000000'
 EVENT_BODY = {
     "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
@@ -31,24 +25,18 @@ EVENT_BODY = {
 }
 
 
-def test_redis_api_post():
-    response = requests.post(
-        url=f'{API_URL}/query/tests:{ITEM_ID}',
-        headers=HEADERS,
-        json=EVENT_BODY,
-        )
-
+def test_redis_api_post(api_url, headers):
+    response = requests.post(url=f'{api_url}/query/tests:{ITEM_ID}', headers=headers, json=EVENT_BODY)  # noqa: E501
     logger.debug(f'{response.status_code}, {response.text}')
     assert response.status_code == 201
-    assert json.loads(response.text)['success'] is True
+
+    response_json = response.json()  # Use the built-in .json() method
+    assert response_json['success'] is True
 
     # If we POST again, it should fail as the key already exists
-    response = requests.post(
-        url=f'{API_URL}/query/tests:{ITEM_ID}',
-        headers=HEADERS,
-        json=EVENT_BODY,
-        )
-
+    response = requests.post(url=f'{api_url}/query/tests:{ITEM_ID}', headers=headers, json=EVENT_BODY)  # noqa: E501
     logger.debug(f'{response.status_code}, {response.text}')
     assert response.status_code == 200
-    assert json.loads(response.text)['success'] is False
+
+    response_json = response.json()  # Use the built-in .json() method
+    assert response_json['success'] is False

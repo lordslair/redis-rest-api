@@ -1,20 +1,14 @@
 # -*- coding: utf8 -*-
 
-import json
 import requests
-import os
 
 from loguru import logger
 
-GUNICORN_PORT = os.environ.get("GUNICORN_PORT", 5000)
-API_URL = f'http://127.0.0.1:{GUNICORN_PORT}'
 
-
-def test_redis_api_check():
-    response = requests.get(
-        url=f'{API_URL}/check',
-        )
-
+def test_redis_api_check(api_url):
+    response = requests.get(url=f'{api_url}/check')
     logger.debug(f'{response.status_code}, {response.text}')
     assert response.status_code == 200
-    assert json.loads(response.text)['success'] is True
+
+    response_json = response.json()  # Use the built-in .json() method
+    assert response_json['success'] is True
