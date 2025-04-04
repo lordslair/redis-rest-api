@@ -6,17 +6,17 @@
 #
 async-timeout==4.0.3
     # via redis
-blinker==1.6.2
+blinker==1.9.0
     # via flask
 click==8.1.3
     # via flask
-flask==3.0.3
+flask==3.1.0
     # via
     #   -r requirements.in
     #   prometheus-flask-exporter
 gunicorn==23.0.0
     # via -r requirements.in
-itsdangerous==2.1.2
+itsdangerous==2.2.0
     # via flask
 jinja2==3.1.2
     # via flask
@@ -34,5 +34,5 @@ prometheus-flask-exporter==0.23.2
     # via -r requirements.in
 redis==5.2.1
     # via -r requirements.in
-werkzeug==3.0.0
+werkzeug==3.1.3
     # via flask
