@@ -31,6 +31,7 @@ from utils.gunilog import (
 # Imports of endpoint functions
 import routes.keys
 import routes.query
+import routes.scan
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)  # We wrap around all the app the metrics
@@ -107,6 +108,14 @@ app.add_url_rule(
     '/query/raw',
     methods=['POST'],
     view_func=routes.query.raw
+    )
+#
+# Routes /scan
+#
+app.add_url_rule(
+    '/scan/<path:path>',
+    methods=['GET'],
+    view_func=routes.scan.scan
     )
 
 
