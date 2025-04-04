@@ -29,6 +29,7 @@ from utils.gunilog import (
     )
 
 # Imports of endpoint functions
+import routes.keys
 import routes.query
 
 app = Flask(__name__)
@@ -91,6 +92,17 @@ app.add_url_rule(
     methods=['PUT'],
     view_func=routes.query.put
     )
+#
+# Routes /keys
+#
+app.add_url_rule(
+    '/keys/<path:path>',
+    methods=['GET'],
+    view_func=routes.keys.keys
+    )
+#
+# Routes /raw
+#
 app.add_url_rule(
     '/query/raw',
     methods=['POST'],
