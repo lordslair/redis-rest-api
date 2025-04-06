@@ -1,33 +1,17 @@
 # -*- coding: utf8 -*-
 
-from flask import jsonify, request
+from flask import jsonify
 from loguru import logger
 
+from routes._decorators import exists
+from routes.query._tools import str2typed
 from utils.redis import r
-from utils.routehelper import (
-    request_check_token,
-    str2typed,
-    )
-from variables import ACCESS_TOKEN, CODE_ENOTFOUND
 
 
+# Custom decorators
+@exists.token
+@exists.key
 def get(key):
-    if ACCESS_TOKEN:
-        request_check_token(request, f'Bearer {ACCESS_TOKEN}')
-
-    if r.exists(key):
-        logger.trace(f'[{key}] KEY found')
-    else:
-        msg = f'[{key}] KEY not found'
-        logger.warning(msg)
-        return jsonify(
-            {
-                "msg": msg,
-                "success": False,
-                "payload": None,
-                }
-            ), CODE_ENOTFOUND
-
     key_type = r.type(key)
     if key_type == 'hash':
         # We hill need to use HGET and send back a dict()

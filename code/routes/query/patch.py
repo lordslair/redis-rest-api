@@ -3,34 +3,17 @@
 from flask import jsonify, request
 from loguru import logger
 
+from routes._decorators import exists
+from routes.query._tools import str2typed, typed2str
 from utils.redis import r
-from utils.routehelper import (
-    request_check_token,
-    request_check_json,
-    str2typed,
-    typed2str,
-    )
-from variables import ACCESS_TOKEN, CODE_ENOTFOUND
+from variables import CODE_ENOTFOUND
 
 
+# Custom decorators
+@exists.token
+@exists.json
+@exists.key
 def patch(key):
-    request_check_json(request)
-    if ACCESS_TOKEN:
-        request_check_token(request, f'Bearer {ACCESS_TOKEN}')
-
-    if r.exists(key):
-        logger.trace(f'[{key}] KEY found')
-    else:
-        msg = f'[{key}] KEY not found'
-        logger.warning(msg)
-        return jsonify(
-            {
-                "msg": msg,
-                "success": False,
-                "payload": None,
-                }
-            ), CODE_ENOTFOUND
-
     key_type = r.type(key)
     if key_type != 'hash':
         # The request try to update a KEY which is not a HASH

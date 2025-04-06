@@ -1,17 +1,16 @@
 # -*- coding: utf8 -*-
 
-from flask import jsonify, request
+from flask import jsonify
 from loguru import logger
 
+from routes._decorators import exists
 from utils.redis import r
-from utils.routehelper import request_check_token
-from variables import ACCESS_TOKEN, CODE_ENOTFOUND
+from variables import CODE_ENOTFOUND
 
 
+# Custom decorators
+@exists.token
 def keys(path):
-    if ACCESS_TOKEN:
-        request_check_token(request, f'Bearer {ACCESS_TOKEN}')
-
     try:
         keys = r.keys(path)
     except Exception as e:

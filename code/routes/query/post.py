@@ -3,34 +3,16 @@
 from flask import jsonify, request
 from loguru import logger
 
+from routes._decorators import exists
+from routes.query._tools import str2typed, typed2str
 from utils.redis import r
-from utils.routehelper import (
-    request_check_token,
-    request_check_json,
-    str2typed,
-    typed2str,
-    )
-from variables import ACCESS_TOKEN
 
 
+# Custom decorators
+@exists.token
+@exists.json
+@exists.key
 def post(key):
-    request_check_json(request)
-    if ACCESS_TOKEN:
-        request_check_token(request, f'Bearer {ACCESS_TOKEN}')
-
-    if r.exists(key):
-        msg = f'[{key}] KEY already exists'
-        logger.warning(msg)
-        return jsonify(
-            {
-                "msg": msg,
-                "success": False,
-                "payload": None,
-                }
-            ), 200
-    else:
-        logger.trace(f'[{key}] KEY will be created')
-
     # We assume the JSON is valid, as it is parsed by Flask
     # We need to transform the values from Typed to STR
     # Especially for True/False/None

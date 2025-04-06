@@ -2,7 +2,11 @@
 
 from flask import jsonify
 
+from routes._decorators import exists
 
+
+# Custom decorators
+@exists.token
 def raw():
     return jsonify(
         {
