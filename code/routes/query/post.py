@@ -11,8 +11,20 @@ from utils.redis import r
 # Custom decorators
 @exists.token
 @exists.json
-@exists.key
 def post(key):
+    if r.exists(key):
+        msg = f'[{key}] KEY already exists'
+        logger.warning(msg)
+        return jsonify(
+            {
+                "msg": msg,
+                "success": False,
+                "payload": None,
+                }
+            ), 200
+    else:
+        logger.trace(f'[{key}] KEY will be created')
+
     # We assume the JSON is valid, as it is parsed by Flask
     # We need to transform the values from Typed to STR
     # Especially for True/False/None
