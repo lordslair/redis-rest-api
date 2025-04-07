@@ -17,9 +17,10 @@ env_vars = {
 }
 # Print the environment variables for debugging
 for var, value in env_vars.items():
+    if var == "ACCESS_TOKEN":
+        if value is None:
+            logger.warning('Config: ACCESS_TOKEN not set. API not protected')
+        else:
+            logger.success('Config: ACCESS_TOKEN set. API protected')
+            value = value[:5] + '*' * (len(value) - 5)
     logger.debug(f"{var}: {value}")
-
-if env_vars['ACCESS_TOKEN'] is None:
-    logger.warning('Config: ACCESS_TOKEN not set. API not protected')
-else:
-    logger.success('Config: ACCESS_TOKEN set. API protected')
