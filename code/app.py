@@ -10,15 +10,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from variables import (
-    ACCESS_TOKEN,
-    CODE_ENOTFOUND,
-    GUNICORN_BIND,
-    GUNICORN_CHDIR,
-    GUNICORN_RELOAD,
-    GUNICORN_THREADS,
-    GUNICORN_WORKERS,
-    )
+from variables import env_vars
 from utils.gunilog import (
     InterceptHandler,
     LOG_LEVEL,
@@ -123,13 +115,6 @@ if __name__ == '__main__':
     intercept_handler = InterceptHandler()
     logging.root.setLevel(LOG_LEVEL)
 
-    if ACCESS_TOKEN is None:
-        logger.warning('Config: ACCESS_TOKEN not set. API not protected')
-    else:
-        logger.success('Config: ACCESS_TOKEN set. API protected')
-    # Logging for Env var CODE_ENOTFOUND
-    logger.debug(f'Config: CODE_ENOTFOUND: {CODE_ENOTFOUND}')
-
     seen = set()
     for name in [
         *logging.root.manager.loggerDict.keys(),
@@ -144,14 +129,14 @@ if __name__ == '__main__':
     logger.configure(handlers=[{"sink": sys.stdout}])
 
     options = {
-        "bind": GUNICORN_BIND,
-        "workers": GUNICORN_WORKERS,
-        "threads": GUNICORN_THREADS,
+        "bind": env_vars['GUNICORN_BIND'],
+        "workers": env_vars['GUNICORN_WORKERS'],
+        "threads": env_vars['GUNICORN_THREADS'],
         "accesslog": "-",
         "errorlog": "-",
         "logger_class": StubbedGunicornLogger,
-        "reload": GUNICORN_RELOAD,
-        "chdir": GUNICORN_CHDIR
+        "reload": env_vars['GUNICORN_RELOAD'],
+        "chdir": env_vars['GUNICORN_CHDIR']
     }
 
     StandaloneApplication(app, options).run()

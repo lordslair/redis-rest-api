@@ -5,7 +5,7 @@ from loguru import logger
 
 from routes._decorators import exists
 from utils.redis import r
-from variables import CODE_ENOTFOUND
+from variables import env_vars
 
 
 # Custom decorators
@@ -36,7 +36,7 @@ def keys(path):
                 "success": False,
                 "payload": [],
                 }
-            ), CODE_ENOTFOUND
+            ), env_vars['CODE_ENOTFOUND']
     else:
         return jsonify(
             {

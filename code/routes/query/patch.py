@@ -6,7 +6,7 @@ from loguru import logger
 from routes._decorators import exists
 from routes.query._tools import str2typed, typed2str
 from utils.redis import r
-from variables import CODE_ENOTFOUND
+from variables import env_vars
 
 
 # Custom decorators
@@ -40,7 +40,7 @@ def patch(key):
                     "success": False,
                     "payload": None,
                     }
-                ), CODE_ENOTFOUND
+                ), env_vars['CODE_ENOTFOUND']
 
     # We assume the JSON is valid, as it is parsed by Flask
     # We need to transform the values from Typed to STR

@@ -6,7 +6,7 @@ from flask import jsonify, request
 from loguru import logger
 
 from utils.redis import r
-from variables import ACCESS_TOKEN, CODE_ENOTFOUND
+from variables import env_vars
 
 
 def json(func):
@@ -45,7 +45,7 @@ def key(func):
                     "success": False,
                     "payload": None,
                     }
-                ), CODE_ENOTFOUND
+                ), env_vars['CODE_ENOTFOUND']
 
     return wrapper
 
@@ -55,7 +55,7 @@ def token(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
-            if request.headers.get('Authorization') != f'Bearer {ACCESS_TOKEN}':
+            if request.headers.get('Authorization') != f"Bearer {env_vars['ACCESS_TOKEN']}":
                 msg = '[API] Token not authorized'
                 logger.warning(msg)
                 return jsonify(
