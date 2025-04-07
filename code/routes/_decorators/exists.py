@@ -36,6 +36,7 @@ def key(func):
         key = kwargs.get('key')
         if r.exists(key):
             logger.trace(f'[{key}] KEY found')
+            return func(*args, **kwargs)
         else:
             msg = f'[{key}] KEY not found'
             logger.warning(msg)
@@ -76,5 +77,6 @@ def token(func):
             ), 500
         else:
             logger.trace('[API] Token validation OK')
+            return func(*args, **kwargs)
 
     return wrapper
