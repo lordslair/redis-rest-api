@@ -1,4 +1,4 @@
-FROM alpine:3.22
+FROM python:3.13-alpine3.22
 
 RUN adduser -h /code -u 1000 -D -H api
 
@@ -11,21 +11,17 @@ COPY --chown=api:api /code            /code
 WORKDIR /code
 ENV PATH="/code/.local/bin:${PATH}"
 
-RUN apk update --no-cache \
-    && apk add --no-cache \
-        "python3>=3.11" \
-        "py3-pip>=24" \
-        "tzdata>=2025" \
-    && apk add --no-cache --virtual .build-deps \
-        "gcc>=13" \
-        "g++>=13" \
-        "libffi-dev=~3.4" \
-        "python3-dev>=3.11" \
-    && su api -c \
-        "pip3 install --break-system-packages --user -U -r requirements.txt \
-            && rm requirements.txt" \
-    && apk del .build-deps
+RUN su api -c "pip3 install --break-system-packages --user -U -r requirements.txt" \
+    && rm requirements.txt
 
 USER api
 
-ENTRYPOINT ["/code/app.py"]
+# Expose port (using the default port from README)
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/check || exit 1
+
+# Run the application with gunicorn
+CMD ["python", "/code/app.py"]
