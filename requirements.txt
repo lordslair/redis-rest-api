@@ -14,7 +14,7 @@ flask==3.1.2
     # via
     #   -r requirements.in
     #   prometheus-flask-exporter
-gunicorn==23.0.0
+gunicorn==25.1.0
     # via -r requirements.in
 itsdangerous==2.2.0
     # via flask
